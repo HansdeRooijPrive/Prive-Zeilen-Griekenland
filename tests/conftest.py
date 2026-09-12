@@ -38,6 +38,6 @@ def page(browser, base_url):
     ctx = browser.new_context()
     pg = ctx.new_page()
     pg.goto(base_url + "/index.html")
-    pg.wait_for_function("window.__app !== undefined")
+    pg.wait_for_function("document.querySelectorAll('#routeList .route-btn').length > 0")
     yield pg
     ctx.close()
