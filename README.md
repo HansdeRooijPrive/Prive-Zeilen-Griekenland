@@ -1,34 +1,30 @@
-# Prive-App-Template
+# Prive-Zeilen-Griekenland — Zeilen in Griekenland
 
-Sjabloon (GitHub *template repository*) voor een **privé** web-app op het
-OTAP-platform. Een nieuwe app maak je door van deze repo een nieuwe repo te
-genereren (`prive-<app>`). De CI/CD komt uit
-[`OTAP-CI`](https://github.com/HansdeRooijPrive/OTAP-CI).
+Interactieve routekaarten voor zeilen in de Ionische Zee. Privé-app op het
+OTAP-platform, gegenereerd uit
+[`Prive-App-Template`](https://github.com/HansdeRooijPrive/Prive-App-Template).
+De CI/CD komt uit [`OTAP-CI`](https://github.com/HansdeRooijPrive/OTAP-CI).
 
-## Snel starten
-```bash
-python build.py            # bouwt index.html (productie)
-python build.py --env=test # testvariant (andere kleur + opslagsleutel)
-# lokaal bekijken: open index.html of serveer de map
-pip install -r requirements-test.txt && python -m playwright install chromium && pytest
-```
-
-## Wat pas je aan per app
-- **`app.json`** — naam, `short_name`, `storage_key` en de thema-kleuren per omgeving (prod/acc/test).
-- **`src/`** — de app zelf: `index.template.html`, `styles.css`, `app/NN-*.js` (IIFE-fragmenten), optioneel `src/vendor/*.js`.
-- **`tests/`** — je eigen tests (optioneel; deze demo bevat een build- en smoke-test).
-
-Placeholders die `build.py` invult: `{{APP_NAME}}`, `{{APP_SHORT}}`,
-`{{STORAGE_KEY}}`, `{{ENV}}`, `{{ENV_LABEL}}`, `{{MERK}}`, `{{MERK_DONKER}}`,
-`{{MERK_LICHT}}`.
+De inhoud komt uit [`Prive-Reizen-Schotland`](https://github.com/HansdeRooijPrive/Prive-Reizen-Schotland),
+waar Griekenland en Schotland eerst één app waren. Commit 6eacc0b splitste die
+app naar Schotland-only; het Griekenland-deel verhuist hierheen.
 
 ## OTAP
 | Branch | Omgeving | URL |
 |--------|----------|-----|
-| `main` | Productie | `…github.io/<repo>/` |
-| `acceptatie` | Acceptatie | `…github.io/<repo>/acceptatie/` |
-| `development` | Test | `…github.io/<repo>/test/` |
+| `development` | Test | https://hansderooijprive.github.io/Prive-Zeilen-Griekenland/test/ |
+| `acceptatie` | Acceptatie | https://hansderooijprive.github.io/Prive-Zeilen-Griekenland/acceptatie/ |
+| `main` | Productie | https://hansderooijprive.github.io/Prive-Zeilen-Griekenland/ |
+
+Werkwijze: wijzig op `development` → CI groen → door naar `acceptatie` →
+testen op de acceptatie-URL → pas na expliciet akkoord naar `main` (productie).
+
+## Lokaal (O)
+```bash
+python build.py            # bouwt index.html (productie)
+python build.py --env=test # testvariant (andere kleur + opslagsleutel)
+pip install -r requirements-test.txt && python -m playwright install chromium && pytest
+```
 
 `index.html` (productie-build) staat ingecheckt; `CI` bewaakt dat die overeenkomt
-met `src/`. Push naar een branch → `OTAP-CI` bouwt en publiceert de bijbehorende
-omgeving.
+met `src/`.
