@@ -10,6 +10,7 @@ app.json. Geen Node/npm nodig.
     python build.py --check         -> faalt als index.html != productie-build
 """
 import argparse
+import base64
 import glob
 import json
 import os
@@ -25,6 +26,12 @@ LABEL = {"prod": "", "acc": "ACCEPTATIE", "test": "TEST"}
 def _read(rel):
     with open(os.path.join(ROOT, rel), encoding="utf-8") as f:
         return f.read()
+
+
+def _icoon(env):
+    """Het icoon van deze omgeving als base64 (zie tools/maak_iconen.py)."""
+    with open(os.path.join(ROOT, "src", "icons", "icon.%s.png" % env), "rb") as f:
+        return base64.b64encode(f.read()).decode("ascii")
 
 
 def _config():
@@ -57,6 +64,7 @@ def build(env="prod"):
         "{{STORAGE_KEY}}": cfg["storage_key"] + SUFFIX[env],
         "{{ENV}}": env,
         "{{ENV_LABEL}}": LABEL[env],
+        "{{ICOON}}": _icoon(env),
         "{{MERK}}": th.get("merk", "#333333"),
         "{{MERK_DONKER}}": th.get("merk_donker", "#111111"),
         "{{MERK_LICHT}}": th.get("merk_licht", "#555555"),

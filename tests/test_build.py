@@ -1,5 +1,6 @@
 """Build- en omgevingsisolatie-tests (pure Python, geen browser)."""
 import os
+import re
 import subprocess
 import sys
 
@@ -30,6 +31,21 @@ def test_omgevingsaanduiding_alleen_buiten_productie():
     assert "ACCEPTATIE" in build.build("acc")
     assert "TEST" in build.build("test")
     assert 'id="env-badge"></span>' in build.build("prod")   # prod: badge leeg
+
+
+def _icoon(html):
+    iconen = re.findall(
+        r'<link rel="(?:apple-touch-icon|icon)" href="data:image/png;base64,([A-Za-z0-9+/=]+)">',
+        html)
+    assert len(iconen) == 2 and iconen[0] == iconen[1]   # favicon en touch-icon zijn hetzelfde
+    return iconen[0]
+
+
+def test_icoon_verschilt_per_omgeving():
+    """Zelfde vormgeving, eigen kleurstelling: drie verschillende iconen."""
+    iconen = [_icoon(build.build(env)) for env in ("prod", "acc", "test")]
+    assert len(set(iconen)) == 3
+    assert all(len(i) > 1000 for i in iconen)            # echt een ingebed plaatje
 
 
 def test_app_is_self_contained():

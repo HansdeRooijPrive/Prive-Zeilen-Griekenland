@@ -17,6 +17,9 @@ this repo was generated from `Prive-App-Template`. See README.md for URLs.
 - App code in `src/app/NN-*.js` as IIFE fragments; placeholders like `{{STORAGE_KEY}}`
   are filled in by `build.py` from `app.json`.
 - Storage key per environment: `prive-zeilen-griekenland` (P), `.acc` (A), `.test` (T).
+- App icon: one shape, one colour scheme per environment (`src/icons/icon.<env>.png`,
+  blue/yellow/green). `build.py` embeds it as a data-URI; regenerate with
+  `python tools/maak_iconen.py` (needs Pillow, dev-only — not used by CI).
 - Tests: Playwright + pytest via Python, no Node.
 - Shared build/deploy logic changes belong in `OTAP-CI`, not here.
 
