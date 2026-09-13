@@ -1,6 +1,6 @@
 # Zeilen in Griekenland (Prive-Zeilen-Griekenland)
 
-Privé-app on the OTAP platform. CI/CD comes from `HansdeRooijPrive/OTAP-CI@v1`;
+Privé-app on the OTAP platform. CI/CD and the build step come from `HansdeRooijPrive/OTAP-CI@v2`;
 this repo was generated from `Prive-App-Template`. See README.md for URLs.
 
 ## Working method (OTAP)
@@ -20,11 +20,14 @@ this repo was generated from `Prive-App-Template`. See README.md for URLs.
   user in the chat. Then fast-forward `acceptatie` → `main`; no merge commits.
 
 ## Conventions
+- `build.py` is the thin v2 wrapper from OTAP-CI (`bouw/build.py`): don't edit it. It runs the
+  central build (fetched once into `.otap/`, git-ignored; in CI via `OTAP_CI_DIR`), pinned by
+  `"platform": "v2"` in `app.json`.
 - App code in `src/app/NN-*.js` as IIFE fragments; placeholders like `{{STORAGE_KEY}}`
-  are filled in by `build.py` from `app.json`.
+  are filled in by the central build from `app.json`.
 - Storage key per environment: `prive-zeilen-griekenland` (P), `.acc` (A), `.test` (T).
 - App icon: one shape, one colour scheme per environment (`src/icons/icon.<env>.png`,
-  blue/yellow/green). `build.py` embeds it as a data-URI; regenerate with
+  blue/yellow/green; the platform requires three differing icons). The build embeds it as a data-URI; regenerate with
   `python tools/maak_iconen.py` (needs Pillow, dev-only — not used by CI).
 - Tests: Playwright + pytest via Python, no Node.
 - Shared build/deploy logic changes belong in `OTAP-CI`, not here.
