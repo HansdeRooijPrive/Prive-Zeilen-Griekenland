@@ -48,6 +48,17 @@ def test_icoon_verschilt_per_omgeving():
     assert all(len(i) > 1000 for i in iconen)            # echt een ingebed plaatje
 
 
+def test_naam_onder_icoon_verschilt_per_omgeving():
+    """Het bijschrift onder het icoon: 'Zeilen GR', 'Zeilen GR acc', 'Zeilen GR test'."""
+    kort = build._config().get("short_name", build._config()["name"])
+    assert 'content="%s"' % kort in build.build("prod")
+    assert 'content="%s acc"' % kort in build.build("acc")
+    assert 'content="%s test"' % kort in build.build("test")
+    # ook in het manifest, want daar leest Android de naam uit
+    assert "%20acc" in build.build("acc")
+    assert "%20test" in build.build("test")
+
+
 def test_app_is_self_contained():
     """Geen externe scripts of stylesheets: alles zit in het ene bestand."""
     html = build.build("prod")

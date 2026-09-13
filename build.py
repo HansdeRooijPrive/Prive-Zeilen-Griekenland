@@ -21,6 +21,9 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 ENVS = ("prod", "acc", "test")
 SUFFIX = {"prod": "", "acc": ".acc", "test": ".test"}
 LABEL = {"prod": "", "acc": "ACCEPTATIE", "test": "TEST"}
+# Achter de app-naam, zodat het bijschrift onder het icoon op je beginscherm
+# meteen verraadt welke omgeving je hebt geïnstalleerd.
+NAAM_SUFFIX = {"prod": "", "acc": " acc", "test": " test"}
 
 
 def _read(rel):
@@ -57,10 +60,17 @@ def build(env="prod"):
     cfg = _config()
     th = _theme(cfg, env)
     naam = cfg["name"]
+    kort = cfg.get("short_name", naam)
+    naam_env = naam + NAAM_SUFFIX[env]
+    kort_env = kort + NAAM_SUFFIX[env]
     repl = {
         "{{APP_NAME}}": naam,
         "{{APP_NAME_URL}}": urllib.parse.quote(naam),
-        "{{APP_SHORT}}": cfg.get("short_name", naam),
+        "{{APP_SHORT}}": kort,
+        "{{APP_NAME_ENV}}": naam_env,
+        "{{APP_NAME_ENV_URL}}": urllib.parse.quote(naam_env),
+        "{{APP_SHORT_ENV}}": kort_env,
+        "{{APP_SHORT_ENV_URL}}": urllib.parse.quote(kort_env),
         "{{STORAGE_KEY}}": cfg["storage_key"] + SUFFIX[env],
         "{{ENV}}": env,
         "{{ENV_LABEL}}": LABEL[env],
