@@ -10,6 +10,12 @@ this repo was generated from `Prive-App-Template`. See README.md for URLs.
 - Push to `development` → CI + deploy to `/test/`. Only promote to `acceptatie`
   (fast-forward: `git push origin development:acceptatie`) once CI on `development` is green.
 - The user tests on https://hansderooijprive.github.io/Prive-Zeilen-Griekenland/acceptatie/.
+- **Known deploy caveat:** GitHub Pages does not activate a second deployment for a
+  commit sha that is already live. Fast-forwarding `acceptatie` to a sha that
+  `development` already deployed leaves `/acceptatie/` stale (the development run
+  built it from the old acceptatie). Verify the live acceptatie page after promoting;
+  if stale, the next deploy with a new sha (e.g. the next development push) fixes it.
+  Reported to the OTAP platform session on 2026-09-13.
 - **Release gate:** `main` (production) only after an explicit "go ahead" from the
   user in the chat. Then fast-forward `acceptatie` → `main`; no merge commits.
 
