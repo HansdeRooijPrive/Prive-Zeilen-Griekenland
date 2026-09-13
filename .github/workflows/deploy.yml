@@ -6,7 +6,7 @@ on:
   workflow_dispatch: {}
 
 permissions:
-  contents: read
+  contents: write   # OTAP-CI v2 maakt per publicatie een losse commit als Pages-versie
   pages: write
   id-token: write
 

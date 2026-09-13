@@ -10,14 +10,13 @@ this repo was generated from `Prive-App-Template`. See README.md for URLs.
 - Push to `development` → CI + deploy to `/test/`. Only promote to `acceptatie`
   (fast-forward: `git push origin development:acceptatie`) once CI on `development` is green.
 - The user tests on https://hansderooijprive.github.io/Prive-Zeilen-Griekenland/acceptatie/.
-- **Known deploy caveat:** GitHub Pages does not activate a second deployment for a
-  commit sha that is already live. Fast-forwarding `acceptatie` or `main` to a sha that
-  `development` already deployed leaves `/acceptatie/` resp. `/` stale (the earlier run
-  built it from the old branch head). This happens on every fast-forward promotion.
-  Always verify the live page after promoting; if stale, a deploy with a new sha fixes it:
-  push a real (non-empty) commit to `development` — never an empty or merge commit on
-  `acceptatie`/`main`. A manual deploy from the promoted branch doesn't help (same sha).
-  Reported to the OTAP platform session on 2026-09-13 (fix pending in OTAP-CI).
+- **Deploy pitfall (fixed):** GitHub Pages does not activate a second deployment for a
+  commit sha that is already live, so fast-forward promotions used to leave `/acceptatie/`
+  or `/` stale. Fixed since OTAP-CI v2 (`f7f0002`): the deploy publishes each run under a
+  loose commit with the same tree as its build version. This needs `contents: write` in
+  `.github/workflows/deploy.yml` — keep it; without it the deploy logs a warning and the
+  pitfall returns. Still verify the live page after promoting. Never use empty or merge
+  commits on `acceptatie`/`main` to force a deploy.
 - **Release gate:** `main` (production) only after an explicit "go ahead" from the
   user in the chat. Then fast-forward `acceptatie` → `main`; no merge commits.
 
